@@ -14,18 +14,22 @@ namespace HelloWorld
         public GameObject aguarde;
         public GameObject desconectar;
 
-
         public void Awake()
         {
             
+        }
+
+        public void Start()
+        {
+            NetworkManager.Singleton.NetworkConfig.EnableSceneManagement = true;
+            NetworkManager.Singleton.NetworkConfig.RegisteredScenes = CenaController.Cenas();
         }
 
         public void IniciarHost()
         {
             NetworkManager.Singleton.OnServerStarted += OnServerStarted;
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
-            NetworkManager.Singleton.StartHost();
-                        
+            NetworkManager.Singleton.StartHost();        
         }
 
         public void IniciarClient()
@@ -33,8 +37,7 @@ namespace HelloWorld
             var network = NetworkManager.Singleton;
             network.GetComponent<UNetTransport>().ConnectAddress = serverAddress.text;
 
-            network.NetworkConfig.ConnectionData = System.Text.Encoding.ASCII.GetBytes("room password");
-           
+            network.NetworkConfig.ConnectionData = System.Text.Encoding.ASCII.GetBytes("room password");         
             NetworkManager.Singleton.StartClient();
             menuConexao.SetActive(false);
             desconectar.SetActive(true);
@@ -62,9 +65,7 @@ namespace HelloWorld
         {
                       
             Debug.Log("host player: "+ NetworkManager.Singleton.LocalClientId + " cliente player: "+clientId);
-            NetworkSceneManager.SwitchScene("SampleScene");
-            
-
+            CenaController.TrocarCenaServidor("SampleScene");
 
         }
 
@@ -73,6 +74,8 @@ namespace HelloWorld
             menuConexao.SetActive(false);
             aguarde.SetActive(true);
             desconectar.SetActive(true);
+
+            
             Debug.Log(NetworkManager.Singleton.LocalClientId);
             Debug.Log("OnServerStarted");
         }
