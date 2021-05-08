@@ -281,8 +281,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2043277756}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 650683719}
+        m_TargetAssemblyTypeName: ConexaoController, Assembly-CSharp
         m_MethodName: IniciarHost
         m_Mode: 1
         m_Arguments:
@@ -561,9 +561,11 @@ GameObject:
   - component: {fileID: 650683717}
   - component: {fileID: 650683716}
   - component: {fileID: 650683715}
+  - component: {fileID: 650683719}
+  - component: {fileID: 650683718}
   m_Layer: 0
   m_Name: NetworkManager
-  m_TagString: Untagged
+  m_TagString: __controller
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -662,6 +664,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &650683718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650683714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd8cbcce3020482498824baae5782da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &650683719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650683714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c658021e88e2d4a9651d0254e084fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverAddress: {fileID: 1397413313}
+  menuConexao: {fileID: 1115377404}
+  aguarde: {fileID: 1249359358}
+  desconectar: {fileID: 866256381}
 --- !u!1 &704783044
 GameObject:
   m_ObjectHideFlags: 0
@@ -984,7 +1014,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2043277756}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: HelloWorld.ConexaoController, Assembly-CSharp
         m_MethodName: Disconnect
         m_Mode: 1
@@ -2431,66 +2461,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
---- !u!1 &2043277755
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2043277757}
-  - component: {fileID: 2043277756}
-  - component: {fileID: 2043277758}
-  m_Layer: 0
-  m_Name: ConexaoController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2043277756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043277755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07c658021e88e2d4a9651d0254e084fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serverAddress: {fileID: 1397413313}
-  menuConexao: {fileID: 1115377404}
-  aguarde: {fileID: 1249359358}
-  desconectar: {fileID: 866256381}
---- !u!4 &2043277757
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043277755}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 315.5, y: 252.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2043277758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043277755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd8cbcce3020482498824baae5782da1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2135472983
 GameObject:
   m_ObjectHideFlags: 0
@@ -2574,8 +2544,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2043277756}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 650683719}
+        m_TargetAssemblyTypeName: ConexaoController, Assembly-CSharp
         m_MethodName: IniciarClient
         m_Mode: 1
         m_Arguments:
@@ -2635,6 +2605,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5668776516432389699, guid: aec414315ba82564cb38482b251239d3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5668776516432389703, guid: aec414315ba82564cb38482b251239d3,
         type: 3}

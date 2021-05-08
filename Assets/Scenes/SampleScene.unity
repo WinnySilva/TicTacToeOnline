@@ -397,6 +397,7 @@ GameObject:
   m_Component:
   - component: {fileID: 556190324}
   - component: {fileID: 556190325}
+  - component: {fileID: 556190326}
   m_Layer: 0
   m_Name: tabuleiro
   m_TagString: Untagged
@@ -449,6 +450,23 @@ MonoBehaviour:
   - {fileID: 177378476}
   - {fileID: 276553801}
   - {fileID: 1269470843}
+--- !u!114 &556190326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 556190323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkInstanceId: 0
+  PrefabHash: 9624815450468971530
+  PrefabHashGenerator: tabuleiro
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,9 +680,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a647b7a2dbaf58547883f5a8c33304c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id_jogador:
+  id_jogador_atual:
     m_InternalValue: 0
-  etapaAtual: 0
   tabuleiro: {fileID: 556190325}
   conn: {fileID: 0}
 --- !u!4 &901782225

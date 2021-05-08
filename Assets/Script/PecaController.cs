@@ -1,4 +1,5 @@
 using MLAPI;
+using MLAPI.Messaging;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,8 @@ public class PecaController : NetworkBehaviour
 {
     [SerializeField]
     private EnumPeca peca;
-    public enum EnumPeca { NONE, X, O }
+    private ulong clientId;
+    public enum EnumPeca { NONE = 0, X = -1, O = 1 }
 
 
     public Vector2Int posicao;
@@ -16,7 +18,7 @@ public class PecaController : NetworkBehaviour
     public GameObject x;
     public GameObject o;
 
-   
+
     public EnumPeca Peca
     {
         get { return peca; }
@@ -44,10 +46,11 @@ public class PecaController : NetworkBehaviour
         }
     }
 
+ 
     // Start is called before the first frame update
     void Start()
     {
-
+        clientId = NetworkManager.Singleton.LocalClientId;
     }
 
     // Update is called once per frame
@@ -59,18 +62,17 @@ public class PecaController : NetworkBehaviour
 
     private void OnMouseDown()
     {
+        JogadaEfetuadaClientRpc();
+    }
 
-        Debug.Log("x:" + posicao.x + " y:" + posicao.y);
-        Debug.Log("Player " + NetworkManager.Singleton.LocalClientId);
-        if (NetworkManager.Singleton.IsHost)
-        {
-            this.Peca = EnumPeca.X;
-        }
-        else
-        {
-            this.Peca = EnumPeca.O;
-        }
+    [ClientRpc]
+    public void JogadaEfetuadaClientRpc()
+    {
+        Debug.Log("FazerMovimento");
+
+        GameController.Instance.JogadaEfetuada(this, clientId);
 
     }
+
 
 }
