@@ -4,9 +4,7 @@ using MLAPI.Spawning;
 using MLAPI.Transports.UNET;
 using UnityEngine;
 
-namespace HelloWorld
-{
-    public class ConexaoController : MonoBehaviour
+    public class ConexaoController : NetworkBehaviour
     {
 
         public TMPro.TMP_InputField serverAddress;
@@ -14,7 +12,12 @@ namespace HelloWorld
         public GameObject aguarde;
         public GameObject desconectar;
 
-        public void Awake()
+        private ulong id_jogador_um, id_jogador_dois;
+
+    public ulong Id_jogador_um { get => id_jogador_um;  }
+    public ulong Id_jogador_dois { get => id_jogador_dois; }
+
+    public void Awake()
         {
             
         }
@@ -22,6 +25,7 @@ namespace HelloWorld
         public void Start()
         {
             NetworkManager.Singleton.NetworkConfig.EnableSceneManagement = true;
+            
             NetworkManager.Singleton.NetworkConfig.RegisteredScenes = CenaController.Cenas();
         }
 
@@ -63,7 +67,7 @@ namespace HelloWorld
 
         public void OnClientConnectedCallback(ulong clientId)
         {
-                      
+            id_jogador_dois = clientId;
             Debug.Log("host player: "+ NetworkManager.Singleton.LocalClientId + " cliente player: "+clientId);
             CenaController.TrocarCenaServidor("SampleScene");
 
@@ -75,7 +79,7 @@ namespace HelloWorld
             aguarde.SetActive(true);
             desconectar.SetActive(true);
 
-            
+            id_jogador_um = NetworkManager.Singleton.LocalClientId;
             Debug.Log(NetworkManager.Singleton.LocalClientId);
             Debug.Log("OnServerStarted");
         }
@@ -94,5 +98,9 @@ namespace HelloWorld
             UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
         }
 
+        public void EfetivarMovimento()
+        {
+
+        }
+
     }
-}

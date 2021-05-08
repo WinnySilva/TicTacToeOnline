@@ -7,6 +7,7 @@ public class TabuleiroController : MonoBehaviour
 
     public GameObject[] pecas;
 
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -19,9 +20,9 @@ public class TabuleiroController : MonoBehaviour
         
     }
 
-    public void ColocarPeca()
+    public bool ehFinalJogo()
     {
-
+        return false;
     }
 
 }

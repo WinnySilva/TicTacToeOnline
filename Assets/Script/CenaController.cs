@@ -38,6 +38,5 @@ public class CenaController : MonoBehaviour
         NetworkSceneManager.SwitchScene(mySceneName);
     }
 
-
-
+   
 }
