@@ -18,17 +18,17 @@ public class NetPlayer : NetworkBehaviour
         netObj = GetComponent<NetworkObject>();
         if (IsServer)
         {
-           // TabuleiroController.OnUpdateTabuleiro += UpdateTabuleiroClientRpc;
+           TabuleiroController.OnUpdateTabuleiro += UpdateTabuleiroClientRpc;
         }
 
     }
 
 
     [ClientRpc]
-    public void UpdateTabuleiroClientRpc(PecaController.EnumPeca[,] tabuleiro)
+    public void UpdateTabuleiroClientRpc(PecaController.EnumPeca[] tabuleiro)
     {
         Debug.Log("UpdateTabuleiro");
-        TabuleiroController.Instance.UpdateTabuleiroLocal(tabuleiro);
+        TabuleiroController.Instance.UpdateTabuleiro(tabuleiro);
     }
 
     [ServerRpc]

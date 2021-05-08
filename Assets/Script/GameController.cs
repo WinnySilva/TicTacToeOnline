@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour
     private EtapaJogo etapaAtual;
     private EtapaJogo ultimoJogador;
     private bool liberado;
-    public EnumPeca[,] Pecas { get; private set; }
+    public EnumPeca[] Pecas { get; private set; }
     public enum EtapaJogo
     {
         INICIO_JOGO, AGUARDA_JOGADOR_1, AGUARDA_JOGADOR_2, FINAL_JOGO, ATUALIZA_TABULEIRO
@@ -97,11 +97,11 @@ public class GameController : MonoBehaviour
 
     private void InicioJogo()
     {
-        Pecas = new EnumPeca[,]
+        Pecas = new EnumPeca[]
        {
-            { EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE },
-            { EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE },
-            { EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE }
+             EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE ,
+             EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE ,
+             EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE 
        };
 
         //atualiza etapa
@@ -175,19 +175,19 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        if (etapaAtual == EtapaJogo.AGUARDA_JOGADOR_1 || etapaAtual == EtapaJogo.AGUARDA_JOGADOR_2)
+        if (etapaAtual != EtapaJogo.AGUARDA_JOGADOR_1 && etapaAtual != EtapaJogo.AGUARDA_JOGADOR_2)
         {
             return;
         }
-
+        int pos = x * 3 + y;
         if (etapaAtual == EtapaJogo.AGUARDA_JOGADOR_1)
         {
-            Pecas[x, y] = EnumPeca.X;
+            Pecas[pos] = EnumPeca.X;
 
         }
         else if (etapaAtual == EtapaJogo.AGUARDA_JOGADOR_2)
         {
-            Pecas[x, y] = EnumPeca.O;
+            Pecas[pos] = EnumPeca.O;
         }
 
         liberado = true;

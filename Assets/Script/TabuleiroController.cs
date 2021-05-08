@@ -12,27 +12,31 @@ public class TabuleiroController : MonoBehaviour
     public static TabuleiroController Instance { get; private set; }
     public PecaController[] pecas;
 
-    public static Action<EnumPeca[,]> OnUpdateTabuleiro;
-   
+    public static Action<EnumPeca[]> OnUpdateTabuleiro;
+
 
     private void Awake()
     {
         Instance = this;
-    }            
+    }
 
-    public void UpdateTabuleiroLocal(EnumPeca[,] tabuleiro)
+    public void UpdateTabuleiroLocal(EnumPeca[] tabuleiro)
     {
-        for (int x=0;x<3;x++)
+        UpdateTabuleiro(tabuleiro);
+        OnUpdateTabuleiro?.Invoke(tabuleiro);
+    }
+
+    public void UpdateTabuleiro(EnumPeca[] tabuleiro)
+    {
+        for (int x = 0; x < 3; x++)
         {
             for (int y = 0; y < 3; y++)
             {
-                int pos = x * 3 + y ;
-                pecas[pos].Peca = tabuleiro[x, y];
+                int pos = x * 3 + y;
+                pecas[pos].Peca = tabuleiro[pos];
             }
         }
-
-        OnUpdateTabuleiro?.Invoke(tabuleiro);
-
+       
     }
 
 }
