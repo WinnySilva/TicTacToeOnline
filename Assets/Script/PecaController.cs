@@ -4,11 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PecaController : NetworkBehaviour
+public class PecaController : MonoBehaviour
 {
     [SerializeField]
     private EnumPeca peca;
-    private ulong clientId;
+    private GameObject[] players;
+
     public enum EnumPeca { NONE = 0, X = -1, O = 1 }
 
 
@@ -46,33 +47,19 @@ public class PecaController : NetworkBehaviour
         }
     }
 
- 
+    private void Start()
+    {
+        players = GameObject.FindGameObjectsWithTag("Player");
+    }
+
     // Start is called before the first frame update
-    void Start()
-    {
-        clientId = NetworkManager.Singleton.LocalClientId;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
 
     private void OnMouseDown()
     {
-        JogadaEfetuadaClientRpc();
+        foreach (GameObject obj in players)
+        {
+            obj.GetComponent<NetPlayer>().JogadaEfetuada(posicao.x, posicao.y);
+        }
     }
-
-    [ClientRpc]
-    public void JogadaEfetuadaClientRpc()
-    {
-        Debug.Log("FazerMovimento");
-
-        GameController.Instance.JogadaEfetuada(this, clientId);
-
-    }
-
 
 }

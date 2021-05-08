@@ -50,23 +50,7 @@ public class ConexaoController : NetworkBehaviour
         Debug.Log(NetworkManager.Singleton.LocalClientId);
     }
 
-    public void ApprovalCheck(byte[] connectionData, ulong clientId, MLAPI.NetworkManager.ConnectionApprovedDelegate callback)
-    {
-        //Your logic here
-        bool approve = true;
-        bool createPlayerObject = true;
-
-        // The prefab hash. Use null to use the default player prefab
-        // If using this hash, replace "MyPrefabHashGenerator" with the name of a prefab added to the NetworkPrefabs field of your NetworkManager object in the scene
-        ulong? prefabHash = NetworkSpawnManager.GetPrefabHashFromGenerator("player");
-
-        //If approve is true, the connection gets added. If it's false. The client gets disconnected
-        callback(createPlayerObject, prefabHash, approve, new Vector3(5, 6, 8), Quaternion.identity);
-
-        Debug.Log("ApprovalCheck");
-    }
-
-    public void OnClientConnectedCallback(ulong clientId)
+     public void OnClientConnectedCallback(ulong clientId)
     {
         id_jogador_dois = clientId;
         Debug.Log("host player: " + NetworkManager.Singleton.LocalClientId + " cliente player: " + clientId);
@@ -97,11 +81,6 @@ public class ConexaoController : NetworkBehaviour
         }
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScreen");
-    }
-
-    public void EfetivarMovimento()
-    {
-
     }
 
 }

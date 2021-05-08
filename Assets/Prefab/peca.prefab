@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4728686779508650897}
   - component: {fileID: 4728686779508650892}
   - component: {fileID: 4728686779508650893}
-  - component: {fileID: 6878419936606151862}
   m_Layer: 0
   m_Name: peca
   m_TagString: Untagged
@@ -134,23 +133,6 @@ MonoBehaviour:
   none: {fileID: 4728686780502443314}
   x: {fileID: 4728686781366591475}
   o: {fileID: 4728686780031037502}
---- !u!114 &6878419936606151862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4728686779508650899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkInstanceId: 0
-  PrefabHash: 12457180314317601296
-  PrefabHashGenerator: peca
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
 --- !u!1 &4728686780031037502
 GameObject:
   m_ObjectHideFlags: 0

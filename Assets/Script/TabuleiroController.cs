@@ -1,4 +1,6 @@
+using MLAPI;
 using MLAPI.Messaging;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,36 +10,29 @@ public class TabuleiroController : MonoBehaviour
 {
 
     public static TabuleiroController Instance { get; private set; }
-    public GameObject[] pecas;
-    public EnumPeca[,] peca;
+    public PecaController[] pecas;
+
+    public static Action<EnumPeca[,]> OnUpdateTabuleiro;
+   
 
     private void Awake()
     {
         Instance = this;
-    }
+    }            
 
-    // Start is called before the first frame update
-    void Start()
+    public void UpdateTabuleiroLocal(EnumPeca[,] tabuleiro)
     {
+        for (int x=0;x<3;x++)
+        {
+            for (int y = 0; y < 3; y++)
+            {
+                int pos = x * 3 + y ;
+                pecas[pos].Peca = tabuleiro[x, y];
+            }
+        }
+
+        OnUpdateTabuleiro?.Invoke(tabuleiro);
 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public bool ehFinalJogo()
-    {
-        return false;
-    }
-
-    [ClientRpc]
-    public void UpdateTabuleiroClientRpc(EnumPeca[,] tabuleiro)
-    {
-        Debug.Log("UpdateTabuleiro");
-    }
-
 
 }

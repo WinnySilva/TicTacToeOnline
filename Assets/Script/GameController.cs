@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static PecaController;
 
-public class GameController : NetworkBehaviour
+public class GameController : MonoBehaviour
 
 {
 
@@ -27,16 +27,20 @@ public class GameController : NetworkBehaviour
 
     private void Awake()
     {
-        
-
-        Instance = this;
+        if (!NetworkManager.Singleton.IsHost)
+        {
+            Destroy(this);
+            return;
+        }
 
         GameObject obj = GameObject.FindGameObjectWithTag("__controller");
         if (obj == null)
         {
             Destroy(this);
+            return;
         }
 
+        Instance = this;
         conn = obj.GetComponent<ConexaoController>();
 
         liberado = false;
@@ -57,36 +61,33 @@ public class GameController : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!NetworkManager.Singleton.IsHost)
-        {
-            return;
-        }
+
         switch (etapaAtual)
         {
             case EtapaJogo.INICIO_JOGO:
-                Debug.Log("INICIO");
+                //   Debug.Log("INICIO");
                 InicioJogo();
                 break;
             case EtapaJogo.AGUARDA_JOGADOR_1:
-                Debug.Log("AGUARDA_JOGADOR_1");
+                //   Debug.Log("AGUARDA_JOGADOR_1");
                 if (liberado)
                 {
                     AguardaJogadorUm();
                 }
                 break;
             case EtapaJogo.AGUARDA_JOGADOR_2:
-                Debug.Log("AGUARDA_JOGADOR_2");
+                //   Debug.Log("AGUARDA_JOGADOR_2");
                 if (liberado)
                 {
                     AguardaJogadorDois();
                 }
                 break;
             case EtapaJogo.ATUALIZA_TABULEIRO:
-                Debug.Log("ATUALIZA_TABULEIRO");
+                //  Debug.Log("ATUALIZA_TABULEIRO");
                 AtualizaTabuleiro();
                 break;
             case EtapaJogo.FINAL_JOGO:
-                Debug.Log("FINAL_JOGO");
+                //    Debug.Log("FINAL_JOGO");
                 FinalJogo();
                 break;
             default:
@@ -129,13 +130,13 @@ public class GameController : NetworkBehaviour
         liberado = false;
 
         //atualiza etapa
-        if (tabuleiro.ehFinalJogo())
+        if (ehFinalJogo())
         {
             etapaAtual = EtapaJogo.FINAL_JOGO;
             return;
         }
-        
-        //atualiza etapa
+
+
         //proximo jogador
         if (ultimoJogador == EtapaJogo.AGUARDA_JOGADOR_1)
         {
@@ -147,7 +148,9 @@ public class GameController : NetworkBehaviour
             this.id_jogador_atual = new NetworkVariable<ulong>(conn.Id_jogador_um);
             etapaAtual = EtapaJogo.AGUARDA_JOGADOR_1;
         }
-        UpdateTabuleiro();
+
+        //atualiza etapa
+        TabuleiroController.Instance.UpdateTabuleiroLocal(Pecas);
 
     }
 
@@ -163,16 +166,37 @@ public class GameController : NetworkBehaviour
 
     }
 
-    public void JogadaEfetuada(PecaController peca, ulong playerId)
+    public void JogadaEfetuada(int x, int y, ulong playerId)
     {
-        Debug.Log("JogadaEfetuada "+ playerId+" jogador atual: "+this.id_jogador_atual);
-       
+        Debug.Log(playerId + " X " + this.id_jogador_atual.Value);
+
+        if ( playerId != this.id_jogador_atual.Value)
+        {
+            return;
+        }
+
+        if (etapaAtual == EtapaJogo.AGUARDA_JOGADOR_1 || etapaAtual == EtapaJogo.AGUARDA_JOGADOR_2)
+        {
+            return;
+        }
+
+        if (etapaAtual == EtapaJogo.AGUARDA_JOGADOR_1)
+        {
+            Pecas[x, y] = EnumPeca.X;
+
+        }
+        else if (etapaAtual == EtapaJogo.AGUARDA_JOGADOR_2)
+        {
+            Pecas[x, y] = EnumPeca.O;
+        }
+
         liberado = true;
+
     }
 
-    public void UpdateTabuleiro()
+    private bool ehFinalJogo()
     {
-        TabuleiroController.Instance.UpdateTabuleiroClientRpc(Pecas);
+        return false;
     }
 
 }

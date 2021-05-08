@@ -6,24 +6,45 @@ using UnityEngine;
 
 public class NetPlayer : NetworkBehaviour
 {
-
-    public static NetPlayer Instance { get; private set; }
+    private NetworkObject netObj;
 
     private void Awake()
     {
-        Instance = this;
+
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+        netObj = GetComponent<NetworkObject>();
+        if (IsServer)
+        {
+           // TabuleiroController.OnUpdateTabuleiro += UpdateTabuleiroClientRpc;
+        }
+
     }
 
-    // Update is called once per frame
-    void Update()
+
+    [ClientRpc]
+    public void UpdateTabuleiroClientRpc(PecaController.EnumPeca[,] tabuleiro)
     {
-        
+        Debug.Log("UpdateTabuleiro");
+        TabuleiroController.Instance.UpdateTabuleiroLocal(tabuleiro);
     }
 
-       
+    [ServerRpc]
+    private void JogadaEfetuadaServerRpc(int x, int y)
+    {
+        GameController.Instance.JogadaEfetuada(x, y, OwnerClientId);
+    }
+
+    public void JogadaEfetuada(int x, int y)
+    {
+        if (!IsOwner)
+        {
+            return;
+        } 
+        JogadaEfetuadaServerRpc(x, y);
+
+    }
+
 }
