@@ -1,6 +1,7 @@
 ﻿using MLAPI;
 using MLAPI.SceneManagement;
 using MLAPI.Spawning;
+using MLAPI.Transports.PhotonRealtime;
 using MLAPI.Transports.UNET;
 using System;
 using UnityEngine;
@@ -14,6 +15,9 @@ public class ConexaoController : NetworkBehaviour
     public static Action<ulong> ClientDisconected;
     public static Action ServerStarted;
 
+
+    public UNetTransport uNetTransport;
+    public PhotonRealtimeTransport photon;
 
     private ulong id_jogador_um, id_jogador_dois;
     private NetPlayer localPlayer;
@@ -42,8 +46,10 @@ public class ConexaoController : NetworkBehaviour
     public void IniciarClient(string connectAddress)
     {
         var network = NetworkManager.Singleton;
-        network.GetComponent<UNetTransport>().ConnectAddress = connectAddress;
-        // network.NetworkConfig.ConnectionData = System.Text.Encoding.ASCII.GetBytes("room password");
+
+        uNetTransport.ConnectAddress = connectAddress;
+              
+
         NetworkManager.Singleton.StartClient();
 
     }
