@@ -18,12 +18,14 @@ public class GameController : MonoBehaviour
     public EnumPeca[] Pecas { get; private set; }
     public enum EtapaJogo
     {
-        INICIO_JOGO, AGUARDA_JOGADOR_1, AGUARDA_JOGADOR_2, FINAL_JOGO, ATUALIZA_TABULEIRO
+        INICIO_JOGO, AGUARDA_JOGADOR_1, AGUARDA_JOGADOR_2, FINAL_JOGO, ATUALIZA_TABULEIRO, NONE
     }
     public NetworkVariable<ulong> id_jogador_atual;
     public TabuleiroController tabuleiro;
     public ConexaoController conn;
     public EtapaJogo EtapaAtual { get { return etapaAtual; } }
+    public static Action<ulong> OnFinalJogo;
+    public static Action<ulong> OnNovoJogo;
 
     private void Awake()
     {
@@ -33,15 +35,9 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        GameObject obj = GameObject.FindGameObjectWithTag("__controller");
-        if (obj == null)
-        {
-            Destroy(this);
-            return;
-        }
 
         Instance = this;
-        conn = obj.GetComponent<ConexaoController>();
+        conn = ConexaoController.Instance;
 
         liberado = false;
     }
@@ -65,7 +61,7 @@ public class GameController : MonoBehaviour
         switch (etapaAtual)
         {
             case EtapaJogo.INICIO_JOGO:
-                //   Debug.Log("INICIO");
+                Debug.Log("INICIO");
                 InicioJogo();
                 break;
             case EtapaJogo.AGUARDA_JOGADOR_1:
@@ -83,12 +79,15 @@ public class GameController : MonoBehaviour
                 }
                 break;
             case EtapaJogo.ATUALIZA_TABULEIRO:
-                //  Debug.Log("ATUALIZA_TABULEIRO");
+                Debug.Log("ATUALIZA_TABULEIRO");
                 AtualizaTabuleiro();
                 break;
             case EtapaJogo.FINAL_JOGO:
-                //    Debug.Log("FINAL_JOGO");
+                Debug.Log("FINAL_JOGO");
                 FinalJogo();
+                break;
+            case EtapaJogo.NONE:
+                
                 break;
             default:
                 break;
@@ -101,7 +100,7 @@ public class GameController : MonoBehaviour
        {
              EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE ,
              EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE ,
-             EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE 
+             EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE
        };
 
         //atualiza etapa
@@ -129,21 +128,21 @@ public class GameController : MonoBehaviour
     {
         liberado = false;
 
+        bool ehFinal = ehFinalJogo();
+
         //atualiza etapa
-        if (ehFinalJogo())
+        if (ehFinal)
         {
             etapaAtual = EtapaJogo.FINAL_JOGO;
-            return;
+            
         }
-
-
-        //proximo jogador
-        if (ultimoJogador == EtapaJogo.AGUARDA_JOGADOR_1)
+        
+        if (!ehFinal && ultimoJogador == EtapaJogo.AGUARDA_JOGADOR_1)
         {
             this.id_jogador_atual = new NetworkVariable<ulong>(conn.Id_jogador_dois);
             etapaAtual = EtapaJogo.AGUARDA_JOGADOR_2;
         }
-        else
+        else if(!ehFinal)
         {
             this.id_jogador_atual = new NetworkVariable<ulong>(conn.Id_jogador_um);
             etapaAtual = EtapaJogo.AGUARDA_JOGADOR_1;
@@ -157,7 +156,8 @@ public class GameController : MonoBehaviour
     private void FinalJogo()
     {
         liberado = false;
-
+        OnFinalJogo?.Invoke(id_jogador_atual.Value);
+        etapaAtual = EtapaJogo.NONE;
     }
 
     void OnChangeJogador(ulong anterior, ulong novo)
@@ -166,11 +166,40 @@ public class GameController : MonoBehaviour
 
     }
 
+
+    private bool ehFinalJogo()
+    {
+      
+        int L0 = (int)Pecas[0] + (int)Pecas[1] + (int)Pecas[2];
+        int L1 = (int)Pecas[3] + (int)Pecas[4] + (int)Pecas[5];
+        int L2 = (int)Pecas[6] + (int)Pecas[7] + (int)Pecas[8];
+
+        int C0 = (int)Pecas[0] + (int)Pecas[3] + (int)Pecas[6];
+        int C1 = (int)Pecas[1] + (int)Pecas[4] + (int)Pecas[7];
+        int C2 = (int)Pecas[2] + (int)Pecas[5] + (int)Pecas[8];
+
+        int D0 = (int)Pecas[0] + (int)Pecas[4] + (int)Pecas[8];
+        int D1 = (int)Pecas[2] + (int)Pecas[4] + (int)Pecas[6];
+      
+        List<int> val = new List<int>();
+
+        val.Add(L0);
+        val.Add(L1);
+        val.Add(L2);
+        val.Add(C0);
+        val.Add(C1);
+        val.Add(C2);
+        val.Add(D0);
+        val.Add(D1);
+    
+        return val.Contains(-3) || val.Contains(3);
+    }
+
     public void JogadaEfetuada(int x, int y, ulong playerId)
     {
         Debug.Log(playerId + " X " + this.id_jogador_atual.Value);
 
-        if ( playerId != this.id_jogador_atual.Value)
+        if (playerId != this.id_jogador_atual.Value)
         {
             return;
         }
@@ -194,9 +223,11 @@ public class GameController : MonoBehaviour
 
     }
 
-    private bool ehFinalJogo()
+    public void NovoJogo(ulong clientId)
     {
-        return false;
+        this.etapaAtual = EtapaJogo.INICIO_JOGO;
+        OnNovoJogo?.Invoke(clientId);
     }
+
 
 }

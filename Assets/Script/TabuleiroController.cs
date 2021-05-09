@@ -33,7 +33,7 @@ public class TabuleiroController : MonoBehaviour
             for (int y = 0; y < 3; y++)
             {
                 int pos = x * 3 + y;
-                pecas[pos].Peca = tabuleiro[pos];
+                pecas[pos].setPeca(tabuleiro[pos]);
             }
         }
        

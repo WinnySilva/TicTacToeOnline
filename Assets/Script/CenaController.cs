@@ -24,18 +24,10 @@ public class CenaController : MonoBehaviour
     {
 
     }
-    public static List<string> Cenas()
-    {
-        List<string> cenas;
-        cenas = new List<string>();
-        cenas.Add("SampleScene");
-        cenas.Add("TitleScreen");
-        return cenas;
-    }
-
+   
     public static void TrocarCenaServidor(string mySceneName)
     {
-        NetworkSceneManager.SwitchScene(mySceneName);
+        
     }
 
    
