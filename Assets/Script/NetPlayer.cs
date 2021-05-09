@@ -48,11 +48,7 @@ public class NetPlayer : NetworkBehaviour
 
         UIGameModeController.Instance.OnFinalJogo(clientId);
 
-    }
-
-
-  
-    
+    }        
 
     public void JogadaEfetuada(int x, int y)
     {

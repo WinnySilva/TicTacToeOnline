@@ -14,10 +14,11 @@ public class ConexaoController : NetworkBehaviour
     public static Action<ulong> ClientConected;
     public static Action<ulong> ClientDisconected;
     public static Action ServerStarted;
-
+    
 
     public UNetTransport uNetTransport;
-    public PhotonRealtimeTransport photon;
+    public PhotonRealtimeTransport photonTransport;
+    public bool EhLocal { get; private set; }
 
     private ulong id_jogador_um, id_jogador_dois;
     private NetPlayer localPlayer;
@@ -36,11 +37,12 @@ public class ConexaoController : NetworkBehaviour
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
     }
 
-    public void IniciarHost()
+    public void IniciarHost(string connectAddress)
     {
         NetworkManager.Singleton.OnServerStarted += OnServerStarted;
         NetworkManager.Singleton.StartHost();
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
+        photonTransport.RoomName = connectAddress;
     }
 
     public void IniciarClient(string connectAddress)
@@ -48,7 +50,7 @@ public class ConexaoController : NetworkBehaviour
         var network = NetworkManager.Singleton;
 
         uNetTransport.ConnectAddress = connectAddress;
-              
+        photonTransport.RoomName = connectAddress;
 
         NetworkManager.Singleton.StartClient();
 
@@ -95,7 +97,20 @@ public class ConexaoController : NetworkBehaviour
         return NetworkManager.Singleton.ConnectedClientsList.Count;
     }
 
+    public void ControleTransporte(bool ehLocal)
+    {
+        EhLocal = ehLocal;
 
+        if (EhLocal)
+        {
+            NetworkManager.Singleton.NetworkConfig.NetworkTransport = this.uNetTransport;
+        }
+        else
+        {
+            NetworkManager.Singleton.NetworkConfig.NetworkTransport = this.photonTransport;
+        }
+
+    }
  
 
 }
