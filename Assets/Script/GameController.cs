@@ -96,13 +96,13 @@ public class GameController : MonoBehaviour
 
     private void InicioJogo()
     {
-        Pecas = new EnumPeca[]
-       {
+
+        Pecas = new EnumPeca[] {
              EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE ,
              EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE ,
              EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE
        };
-
+              
         //atualiza etapa
         etapaAtual = EtapaJogo.ATUALIZA_TABULEIRO;
     }
@@ -191,8 +191,10 @@ public class GameController : MonoBehaviour
         val.Add(C2);
         val.Add(D0);
         val.Add(D1);
+
+        List<EnumPeca> pc = new List<EnumPeca>(Pecas);
     
-        return val.Contains(-3) || val.Contains(3);
+        return val.Contains(-3) || val.Contains(3) || !pc.Contains(EnumPeca.NONE);
     }
 
     public void JogadaEfetuada(int x, int y, ulong playerId)

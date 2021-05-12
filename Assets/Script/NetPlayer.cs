@@ -1,5 +1,6 @@
 using MLAPI;
 using MLAPI.Messaging;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine;
 public class NetPlayer : NetworkBehaviour
 {
     private NetworkObject netObj;
+    public static Action<ulong> FinalJogoAction;
 
     private void Awake()
     {
@@ -22,21 +24,23 @@ public class NetPlayer : NetworkBehaviour
         }
 
         GameController.OnFinalJogo +=FinalJogoClientRpc;
+        GameController.OnNovoJogo += NovoJogoClientRpc;
     }
 
     private void OnDestroy()
     {
         TabuleiroController.OnUpdateTabuleiro -= UpdateTabuleiroClientRpc;
         GameController.OnFinalJogo -= FinalJogoClientRpc;
+        GameController.OnNovoJogo -= NovoJogoClientRpc;
     }
 
     [ClientRpc]
     public void UpdateTabuleiroClientRpc(PecaController.EnumPeca[] tabuleiro)
     {
+
         Debug.Log("UpdateTabuleiro");
         TabuleiroController.Instance.UpdateTabuleiro(tabuleiro);
     }
-
 
     [ClientRpc]
     public void FinalJogoClientRpc(ulong clientId)
@@ -48,7 +52,20 @@ public class NetPlayer : NetworkBehaviour
 
         UIGameModeController.Instance.OnFinalJogo(clientId);
 
-    }        
+    }
+
+    [ClientRpc]
+    public void NovoJogoClientRpc(ulong clientId)
+    {
+        if (!IsOwner)
+        {
+            return;
+        }
+
+        UIGameModeController.Instance.OnNovoJogo(clientId);
+
+    }
+
 
     public void JogadaEfetuada(int x, int y)
     {

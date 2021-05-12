@@ -53,7 +53,7 @@ public class UIGameModeController : MonoBehaviour
         FinalDeJogoMsg.SetActive(false);
     }
 
-    void OnNovoJogo(ulong clientId)
+    public void OnNovoJogo(ulong clientId)
     {
         FinalDeJogoMsg.SetActive(false);
     }

@@ -40,11 +40,8 @@ public class UITitleScreen : MonoBehaviour
 
     public void IniciarHost()
     {
-        ConexaoController.Instance.IniciarHost(serverAddressTxt.text);
-        //      menuConexao.SetActive(false);
-        //       iniciandoHost.SetActive(true);
-        //aguarde.SetActive(false);
-        //      desconectarBtn.SetActive(false);
+        ConexaoController.Instance.IniciarHost(roomNameTxt.text);
+        
     }
     public void IniciarCliente()
     {

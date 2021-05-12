@@ -14,10 +14,29 @@ public class ConexaoController : NetworkBehaviour
     public static Action<ulong> ClientConected;
     public static Action<ulong> ClientDisconected;
     public static Action ServerStarted;
-    
 
-    public UNetTransport uNetTransport;
-    public PhotonRealtimeTransport photonTransport;
+    private UNetTransport _unetT;
+    private PhotonRealtimeTransport _photonT;
+    private UNetTransport _UNetTransport
+    {
+        get {
+            if (_unetT != null) {
+                return _unetT;
+            }
+            return GameObject.Find("uNet").GetComponent<UNetTransport>();
+        }
+    }
+    private PhotonRealtimeTransport _PhotonTransport
+    {
+        get
+        {
+            if (_photonT != null)
+            {
+                return _photonT;
+            }
+            return GameObject.Find("Photon").GetComponent<PhotonRealtimeTransport>();
+        }
+    }
     public bool EhLocal { get; private set; }
 
     private ulong id_jogador_um, id_jogador_dois;
@@ -32,25 +51,26 @@ public class ConexaoController : NetworkBehaviour
 
     public void Start()
     {
+
         
+
         NetworkManager.Singleton.NetworkConfig.EnableSceneManagement = true;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
     }
 
-    public void IniciarHost(string connectAddress)
+    public void IniciarHost(string val)
     {
         NetworkManager.Singleton.OnServerStarted += OnServerStarted;
         NetworkManager.Singleton.StartHost();
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
-        photonTransport.RoomName = connectAddress;
+        _PhotonTransport.RoomName = val;
     }
 
-    public void IniciarClient(string connectAddress)
+    public void IniciarClient(string val)
     {
-        var network = NetworkManager.Singleton;
 
-        uNetTransport.ConnectAddress = connectAddress;
-        photonTransport.RoomName = connectAddress;
+        _UNetTransport.ConnectAddress = val;
+        _PhotonTransport.RoomName = val;
 
         NetworkManager.Singleton.StartClient();
 
@@ -103,14 +123,14 @@ public class ConexaoController : NetworkBehaviour
 
         if (EhLocal)
         {
-            NetworkManager.Singleton.NetworkConfig.NetworkTransport = this.uNetTransport;
+            NetworkManager.Singleton.NetworkConfig.NetworkTransport = this._UNetTransport;
         }
         else
         {
-            NetworkManager.Singleton.NetworkConfig.NetworkTransport = this.photonTransport;
+            NetworkManager.Singleton.NetworkConfig.NetworkTransport = this._PhotonTransport;
         }
 
     }
- 
+
 
 }
