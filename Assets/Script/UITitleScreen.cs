@@ -11,10 +11,13 @@ public class UITitleScreen : MonoBehaviour
     public GameObject aguarde;
     public GameObject iniciandoHost;
     public GameObject desconectarBtn;
+
+    public GameObject colecaoOnline;
+    public GameObject colecaoLocal;
+
     public TMPro.TMP_InputField serverAddressTxt;
     public TMPro.TMP_InputField roomNameTxt;
 
-    public TMPro.TMP_Dropdown modoTransportCmb;
 
     // Start is called before the first frame update
     void Start()
@@ -22,8 +25,9 @@ public class UITitleScreen : MonoBehaviour
         ConexaoController.ClientConected += ClientConected;
         ConexaoController.ServerStarted += ServerIniciado;
         ConexaoController.Instance.ControleTransporte(true);
-        serverAddressTxt.gameObject.SetActive(true);
-        this.roomNameTxt.gameObject.SetActive(false);
+
+        colecaoOnline.SetActive(false);
+        colecaoLocal.SetActive(true);
     }
 
     // Update is called once per frame
@@ -41,7 +45,7 @@ public class UITitleScreen : MonoBehaviour
     public void IniciarHost()
     {
         ConexaoController.Instance.IniciarHost(roomNameTxt.text);
-        
+
     }
     public void IniciarCliente()
     {
@@ -73,18 +77,18 @@ public class UITitleScreen : MonoBehaviour
 
     public void OnModoTransportChange(Int32 val)
     {
-        Debug.Log("ModoTransport " + modoTransportCmb.options[modoTransportCmb.value].text);
-        if (modoTransportCmb.value == 0)
+
+        if (val == 0)
+        {
+            ConexaoController.Instance.ControleTransporte(false);
+            colecaoOnline.SetActive(true);
+            colecaoLocal.SetActive(false);
+        }
+        else if (val == 1)
         {
             ConexaoController.Instance.ControleTransporte(true);
-            serverAddressTxt.gameObject.SetActive(true);
-            this.roomNameTxt.gameObject.SetActive(false);
-        }
-        else if (modoTransportCmb.value == 1)
-        {
-            serverAddressTxt.gameObject.SetActive(false);
-            this.roomNameTxt.gameObject.SetActive(true);
-            ConexaoController.Instance.ControleTransporte(false);
+            colecaoOnline.SetActive(false);
+            colecaoLocal.SetActive(true);
         }
     }
 
