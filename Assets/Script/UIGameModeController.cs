@@ -8,6 +8,7 @@ public class UIGameModeController : MonoBehaviour
 
     public GameObject FinalDeJogoMsg;
     public TMPro.TMP_Text mensagemJogador;
+    public TMPro.TMP_Text mensagemJogadorFinalJogo;
     private NetPlayer localPlayer;
     public static UIGameModeController Instance { get; private set; }
 
@@ -64,8 +65,23 @@ public class UIGameModeController : MonoBehaviour
         Desconectar();
     }
 
-    public void OnFinalJogo(ulong clientId)
+    public void OnFinalJogo(double vencedor, ulong clientId)
     {
+        
+        string msg;
+        if (vencedor == clientId)
+        {
+            msg = "Você venceu";
+        }
+        else if( vencedor == -99)
+        {
+            msg = "Velhaaaa!!!";
+        }
+        else
+        {
+            msg = "Você perdeu";
+        }
+        mensagemJogadorFinalJogo.text = msg;
         FinalDeJogoMsg.SetActive(true);
     }
 

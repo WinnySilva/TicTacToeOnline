@@ -46,14 +46,14 @@ public class NetPlayer : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void FinalJogoClientRpc(ulong clientId)
+    public void FinalJogoClientRpc(double vencedor)
     {
         if (!IsOwner)
         {
             return;
         }
 
-        UIGameModeController.Instance.OnFinalJogo(clientId);
+        UIGameModeController.Instance.OnFinalJogo(vencedor, this.OwnerClientId);
 
     }
 

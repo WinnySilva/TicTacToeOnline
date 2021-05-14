@@ -21,10 +21,11 @@ public class GameController : MonoBehaviour
         INICIO_JOGO, AGUARDA_JOGADOR_1, AGUARDA_JOGADOR_2, FINAL_JOGO, ATUALIZA_TABULEIRO, NONE
     }
     public NetworkVariable<ulong> id_jogador_atual;
+    public Double IdVencedor { get; private set; }
     public TabuleiroController tabuleiro;
     public ConexaoController conn;
     public EtapaJogo EtapaAtual { get { return etapaAtual; } }
-    public static Action<ulong> OnFinalJogo;
+    public static Action<Double> OnFinalJogo;
     public static Action<ulong> OnNovoJogo;
     public static Action<ulong> MudancaJogador;
 
@@ -47,7 +48,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         etapaAtual = EtapaJogo.INICIO_JOGO;
-        id_jogador_atual.OnValueChanged += OnChangeJogador;
+      
     }
 
     private void OnDestroy()
@@ -103,7 +104,7 @@ public class GameController : MonoBehaviour
              EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE ,
              EnumPeca.NONE, EnumPeca.NONE, EnumPeca.NONE
        };
-              
+        IdVencedor = -1;
         //atualiza etapa
         etapaAtual = EtapaJogo.ATUALIZA_TABULEIRO;
     }
@@ -157,16 +158,9 @@ public class GameController : MonoBehaviour
     private void FinalJogo()
     {
         liberado = false;
-        OnFinalJogo?.Invoke(id_jogador_atual.Value);
+        OnFinalJogo?.Invoke(this.IdVencedor);
         etapaAtual = EtapaJogo.NONE;
     }
-
-    void OnChangeJogador(ulong anterior, ulong novo)
-    {
-        Debug.Log("OnChangeJogador");
-
-    }
-
 
     private bool ehFinalJogo()
     {
@@ -194,10 +188,30 @@ public class GameController : MonoBehaviour
         val.Add(D1);
 
         List<EnumPeca> pc = new List<EnumPeca>(Pecas);
-    
-        return val.Contains(-3) || val.Contains(3) || !pc.Contains(EnumPeca.NONE);
+       
+        if (val.Contains(-3))
+        {
+            IdVencedor =  conn.Id_jogador_um;
+            return true;
+
+        }
+         
+        if(val.Contains(3))
+        {
+            IdVencedor = conn.Id_jogador_dois;
+            return true;
+        }
+        
+        if(!pc.Contains(EnumPeca.NONE))
+        {
+            IdVencedor = -99;
+            return true;
+        }
+
+        return false;
     }
 
+    
     public void JogadaEfetuada(int x, int y, ulong playerId)
     {
         Debug.Log(playerId + " X " + this.id_jogador_atual.Value);
