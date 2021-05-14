@@ -26,6 +26,7 @@ public class GameController : MonoBehaviour
     public EtapaJogo EtapaAtual { get { return etapaAtual; } }
     public static Action<ulong> OnFinalJogo;
     public static Action<ulong> OnNovoJogo;
+    public static Action<ulong> MudancaJogador;
 
     private void Awake()
     {
@@ -150,7 +151,7 @@ public class GameController : MonoBehaviour
 
         //atualiza etapa
         TabuleiroController.Instance.UpdateTabuleiroLocal(Pecas);
-
+        MudancaJogador?.Invoke(this.id_jogador_atual.Value);
     }
 
     private void FinalJogo()

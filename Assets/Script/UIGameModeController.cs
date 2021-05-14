@@ -7,6 +7,7 @@ public class UIGameModeController : MonoBehaviour
 {
 
     public GameObject FinalDeJogoMsg;
+    public TMPro.TMP_Text mensagemJogador;
     private NetPlayer localPlayer;
     public static UIGameModeController Instance { get; private set; }
 
@@ -66,6 +67,22 @@ public class UIGameModeController : MonoBehaviour
     public void OnFinalJogo(ulong clientId)
     {
         FinalDeJogoMsg.SetActive(true);
+    }
+
+    public void MudancaDeTurno(bool minhaVez)
+    {
+        if (minhaVez)
+        {
+            this.mensagemJogador.text = "Sua vez de jogar";
+            this.mensagemJogador.color = new Color(1,0,0);
+
+        }
+        else
+        {
+            this.mensagemJogador.text = "Aguarde sua vez de jogar";
+            this.mensagemJogador.color = new Color(0,0,0);
+
+        }
     }
 
 }

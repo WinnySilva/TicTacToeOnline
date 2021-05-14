@@ -21,10 +21,12 @@ public class NetPlayer : NetworkBehaviour
         if (IsServer)
         {
             TabuleiroController.OnUpdateTabuleiro += UpdateTabuleiroClientRpc;
+           
         }
 
         GameController.OnFinalJogo +=FinalJogoClientRpc;
         GameController.OnNovoJogo += NovoJogoClientRpc;
+        GameController.MudancaJogador += MudancaDeTurnoClientRpc;
     }
 
     private void OnDestroy()
@@ -32,6 +34,7 @@ public class NetPlayer : NetworkBehaviour
         TabuleiroController.OnUpdateTabuleiro -= UpdateTabuleiroClientRpc;
         GameController.OnFinalJogo -= FinalJogoClientRpc;
         GameController.OnNovoJogo -= NovoJogoClientRpc;
+        GameController.MudancaJogador -= MudancaDeTurnoClientRpc;
     }
 
     [ClientRpc]
@@ -64,6 +67,16 @@ public class NetPlayer : NetworkBehaviour
 
         UIGameModeController.Instance.OnNovoJogo(clientId);
 
+    }
+
+    [ClientRpc]
+    public void MudancaDeTurnoClientRpc(ulong clientId)
+    {
+        if (!IsOwner)
+        {
+            return;
+        }        
+        UIGameModeController.Instance.MudancaDeTurno(clientId == this.OwnerClientId);
     }
 
 

@@ -92,6 +92,11 @@ public class UITitleScreen : MonoBehaviour
         }
     }
 
+    public void Fechar()
+    {
+        Application.Quit();
+    }
+
     private void ClientConected(ulong clientId)
     {
         if (ConexaoController.Instance.ClientesConectados() == 2)
